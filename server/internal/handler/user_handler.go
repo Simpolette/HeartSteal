@@ -8,14 +8,15 @@ import (
 )
 
 type signupRequest struct {
-	UserName    string `json:"username" binding:"required"`
-	Email    	string `json:"email" binding:"required,email"`
-	Password 	string `json:"password" binding:"required,min=8"`
+	Username    string `json:"username"     binding:"required"`
+	Email    	string `json:"email"        binding:"required,email"`
+	PhoneNumber string `json:"phone_number" binding:"required"`
+	Password 	string `json:"password"     binding:"required,min=8"`
 }
 
 type loginRequest struct {
-	Email    	string `json:"email" binding:"required,email"`
-	Password 	string `json:"password" binding:"required"`
+	Email    	string `json:"email"        binding:"required,email"`
+	Password 	string `json:"password"     binding:"required"`
 }
 
 type UserHandler struct {
@@ -37,9 +38,10 @@ func (h *UserHandler) Signup(c *gin.Context) {
 	}
 
 	user := &domain.User{
-		UserName:     	req.UserName,
+		Username:     	req.Username,
 		Email:    		req.Email,
 		Password: 		req.Password,
+		PhoneNumber: 	req.PhoneNumber,
 	}
 
 	err := h.UserUseCase.Register(c.Request.Context(), user)

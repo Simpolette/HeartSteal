@@ -14,7 +14,7 @@ type User struct {
 	ID       		primitive.ObjectID 	 `bson:"_id,omitempty"   json:"id"`
 	Username     	string             	 `bson:"username"        json:"username"`
 	Email    		string             	 `bson:"email"           json:"email"`
-	PhoneNumber		string				 `bson:"phone_number"    json:"phoneNumber"`
+	PhoneNumber		string				 `bson:"phone_number"    json:"phone_number"`
 	Password 		string             	 `bson:"password"        json:"-"`
 	AvatarUrl		string				 `bson:"avatar_url"      json:"avatar_url"`
 	FriendsList 	[]primitive.ObjectID `bson:"friends_list"    json:"friends_list"`
