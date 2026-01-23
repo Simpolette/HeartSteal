@@ -10,12 +10,11 @@ import (
 type signupRequest struct {
 	Username    string `json:"username"     binding:"required"`
 	Email    	string `json:"email"        binding:"required,email"`
-	PhoneNumber string `json:"phone_number" binding:"required"`
 	Password 	string `json:"password"     binding:"required,min=8"`
 }
 
 type loginRequest struct {
-	Email    	string `json:"email"        binding:"required,email"`
+	Username    string `json:"username"     binding:"required"`
 	Password 	string `json:"password"     binding:"required"`
 }
 
@@ -41,7 +40,6 @@ func (h *UserHandler) Signup(c *gin.Context) {
 		Username:     	req.Username,
 		Email:    		req.Email,
 		Password: 		req.Password,
-		PhoneNumber: 	req.PhoneNumber,
 	}
 
 	err := h.UserUseCase.Register(c.Request.Context(), user)
@@ -65,7 +63,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 		return
 	}
 
-	accessToken, err := h.UserUseCase.Login(c.Request.Context(), req.Email, req.Password)
+	accessToken, err := h.UserUseCase.Login(c.Request.Context(), req.Username, req.Password)
 	if err != nil {
 		if err == domain.ErrInvalidCredentials {
 			c.JSON(http.StatusUnauthorized, domain.ErrorResponse{Message: "Invalid email or password"})
@@ -78,7 +76,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, domain.SuccessResponse{
 		Message: "Login successfully",
 		Data: gin.H{
-			accessToken: accessToken,
+			"accessToken": accessToken,
 		},
 	})
 }

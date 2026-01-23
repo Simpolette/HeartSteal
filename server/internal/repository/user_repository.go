@@ -54,6 +54,26 @@ func (r *userRepository) GetByEmail(c context.Context, email string) (*domain.Us
 	return &user, nil
 }
 
+
+func (r *userRepository) GetByUsername(c context.Context, username string) (*domain.User, error) {
+	collection := r.database.Collection(r.collection)
+
+	var user domain.User
+
+	filter := bson.M{"username": username}
+
+	err := collection.FindOne(c, filter).Decode(&user)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, domain.ErrUserNotFound
+		}
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+
 func (r *userRepository) GetByID(c context.Context, id string) (*domain.User, error) {
 	collection := r.database.Collection(r.collection)
 

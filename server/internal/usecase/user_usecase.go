@@ -37,6 +37,11 @@ func (u *userUseCase) Register(c context.Context, user *domain.User) error {
 		return domain.ErrEmailExists
 	}
 
+	_, err = u.userRepo.GetByUsername(ctx, user.Username)
+	if err == nil {
+		return domain.ErrUsernameExists
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 	if err != nil {
 		return domain.ErrInternalServerError
@@ -46,11 +51,11 @@ func (u *userUseCase) Register(c context.Context, user *domain.User) error {
 	return u.userRepo.Create(ctx, user)
 }
 
-func (u *userUseCase) Login(c context.Context, email string, password string) (string, error) {
+func (u *userUseCase) Login(c context.Context, username string, password string) (string, error) {
 	ctx, cancel := context.WithTimeout(c, u.contextTimeout)
 	defer cancel()
 
-	user, err := u.userRepo.GetByEmail(ctx, email)
+	user, err := u.userRepo.GetByUsername(ctx, username)
 	if err != nil {
 		return "", domain.ErrInvalidCredentials
 	}
