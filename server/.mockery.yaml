@@ -1,0 +1,17 @@
+# .mockery.yaml
+
+dir: "internal/domain/mocks"
+
+all: false 
+
+with-expecter: true
+mockname: "Mock{{.InterfaceName}}"
+outpkg: "mocks"
+
+packages:
+  github.com/Simpolette/HeartSteal/server/internal/domain:
+    interfaces:
+      # Please add the required domain needs for generating down here
+      UserRepository:
+        configs:
+          - filename: "mock_user_repository.go"

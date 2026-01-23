@@ -1,9 +1,19 @@
 package domain
 
 import (
+	"errors"
 	"context"
 	"time"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+var (
+	ErrUserNotFound = errors.New("user not found")
+	ErrEmailExists  = errors.New("email already exists")
+	ErrUsernameExists  = errors.New("username already exists")
+
+	ErrInvalidCredentials = errors.New("invalid credentials")
+	ErrInvalidToken       = errors.New("invalid access token")
 )
 
 const (
@@ -14,7 +24,6 @@ type User struct {
 	ID       		primitive.ObjectID 	 `bson:"_id,omitempty"   json:"id"`
 	Username     	string             	 `bson:"username"        json:"username"`
 	Email    		string             	 `bson:"email"           json:"email"`
-	PhoneNumber		string				 `bson:"phone_number"    json:"phoneNumber"`
 	Password 		string             	 `bson:"password"        json:"-"`
 	AvatarUrl		string				 `bson:"avatar_url"      json:"avatar_url"`
 	FriendsList 	[]primitive.ObjectID `bson:"friends_list"    json:"friends_list"`
@@ -24,6 +33,7 @@ type User struct {
 
 type UserRepository interface {
 	Create(c context.Context, user *User) error
+	GetByUsername(c context.Context, username string) (*User, error)
 	GetByEmail(c context.Context, email string) (*User, error)
 	GetByID(c context.Context, id string) (*User, error)
 }
