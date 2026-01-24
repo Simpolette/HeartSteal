@@ -148,6 +148,6 @@ func Test_Login(t *testing.T) {
 
 		assert.Error(t, err)
 		assert.Empty(t, token)
-		assert.Equal(t, domain.ErrUserNotFound, err)
+		assert.Equal(t, domain.ErrInvalidCredentials, err)
 	})
 }
