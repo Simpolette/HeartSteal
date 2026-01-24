@@ -3,10 +3,10 @@ name: Backend
 on:
   push:
     branches: [ "**" ]
-    paths:
-      - 'server/**'
-      - 'go.mod'  
-      - 'go.sum'
+    # paths:
+    #   - 'server/**'
+    #   - 'go.mod'  
+    #   - 'go.sum'
   pull_request:
     branches: [ "main" ]
     paths:
@@ -15,14 +15,23 @@ on:
       - 'go.sum'
 
 jobs:
-
-  build:
-    defaults:
-      run:
-        working-directory: ./server
+  test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+        cache-dependency-path: server/go.sum
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
 
     - name: Set up Go
       uses: actions/setup-go@v5
@@ -36,13 +45,43 @@ jobs:
         version: v1.64.8
         working-directory: server
 
+
+  build:
+    defaults:
+      run:
+        working-directory: server
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+        cache-dependency-path: server/go.sum
+
     - name: Build
       run: go build -v ./...
 
     - name: Test
       run: go test -v ./...
 
+  sast-check:
+    runs-on: ubuntu-latest
+    env:
+      GO111MODULE: on
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+        cache-dependency-path: server/go.sum
+
     - name: Run Gosec Security Scanner
-      uses: securego/gosec@v2.22.1
+      uses: securego/gosec@master
       with:
         args: ./server/...
