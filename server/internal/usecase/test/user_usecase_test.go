@@ -134,7 +134,7 @@ func Test_Login(t *testing.T) {
 
 	t.Run("Error_WrongPassword", func(t *testing.T) {
 		mockRepo, u := setup()
-		username := "test"
+		username := "testErr"
 		
 		// User exists
 		foundUser := &domain.User{
