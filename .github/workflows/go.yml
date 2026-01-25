@@ -85,5 +85,5 @@ jobs:
     - name: Run Gosec Security Scanner
       uses: securego/gosec@master
       with:
-        args: ./...
-        working-directory: server
+        args: "-c 'cd server && gosec ./...'" 
+        entrypoint: "/bin/sh"
