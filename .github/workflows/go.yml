@@ -19,12 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: Set up Go
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@v6
       with:
-        go-version: '1.24'
+        go-version: '1.25'
         cache-dependency-path: server/go.sum
 
   lint:
@@ -53,12 +53,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: Set up Go
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@v6
       with:
-        go-version: '1.24'
+        go-version: '1.25'
         cache-dependency-path: server/go.sum
 
     - name: Build
@@ -73,13 +73,14 @@ jobs:
       GO111MODULE: on
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: Set up Go
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@v6
       with:
-        go-version: '1.24'
+        go-version: '1.25'
         cache-dependency-path: server/go.sum
+        cache: true
 
     - name: Run Gosec Security Scanner
       uses: securego/gosec@master
