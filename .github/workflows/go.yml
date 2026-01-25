@@ -81,7 +81,11 @@ jobs:
         go-version: '1.25'
         cache-dependency-path: server/go.sum
         cache: true
-
+    
+    - name: Ensure package are readable
+      run: go mod download
+      working-directory: server
+    
     - name: Run Gosec Security Scanner
       uses: securego/gosec@master
       with:
