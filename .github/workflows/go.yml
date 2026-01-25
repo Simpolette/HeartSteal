@@ -69,6 +69,9 @@ jobs:
 
   sast-check:
     runs-on: ubuntu-latest
+    container:
+      image: securego/gosec:2.22.11
+      options: --user root
     env:
       GO111MODULE: on
     steps:
@@ -82,8 +85,7 @@ jobs:
         cache-dependency-path: server/go.sum
         cache: true
     
-    - name: Run Gosec Security Scanner
-      uses: securego/gosec@master
-      with:
-        args: "-c 'cd server && gosec ./...'" 
-        entrypoint: "/bin/sh"
+    - name: Run Go Security Check
+      run: |
+        gosec  ./...
+        working-directory: server
