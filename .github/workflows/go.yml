@@ -85,7 +85,16 @@ jobs:
         cache-dependency-path: server/go.sum
         cache: true
     
-    - name: Run Go Security Check
+    - name: Install and Run Gosec Manually
       run: |
-        gosec  ./...
-        working-directory: server
+        # 1. Move to the actual module root
+        cd server
+        
+        # 2. Force download dependencies so the analyzer can see them
+        go mod download
+        
+        # 3. Install gosec binary directly (faster and more reliable than the Action for subfolders)
+        go install github.com/securego/gosec/v2/cmd/gosec@latest
+        
+        # 4. Run it from the same directory as go.mod
+        $(go env GOPATH)/bin/gosec ./...
