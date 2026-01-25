@@ -3,10 +3,10 @@ name: Backend
 on:
   push:
     branches: [ "**" ]
-    # paths:
-    #   - 'server/**'
-    #   - 'go.mod'  
-    #   - 'go.sum'
+    paths:
+      - 'server/**'
+      - 'go.mod'  
+      - 'go.sum'
   pull_request:
     branches: [ "main" ]
     paths:
