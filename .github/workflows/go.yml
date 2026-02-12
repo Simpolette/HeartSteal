@@ -1,0 +1,90 @@
+name: Backend
+
+on:
+  push:
+    branches: [ "**" ]
+    paths:
+      - 'server/**'
+      - 'go.mod'  
+      - 'go.sum'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'server/**'
+      - 'go.mod'  
+      - 'go.sum'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Set up Go
+      uses: actions/setup-go@v6
+      with:
+        go-version: '1.25'
+        cache-dependency-path: server/go.sum
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Set up Go
+      uses: actions/setup-go@v6
+      with:
+        go-version: '1.25'
+        cache-dependency-path: server/go.sum
+
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v9
+      with:
+        version: latest
+        working-directory: server
+
+
+  build:
+    defaults:
+      run:
+        working-directory: server
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Set up Go
+      uses: actions/setup-go@v6
+      with:
+        go-version: '1.25'
+        cache-dependency-path: server/go.sum
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: Test
+      run: go test -v ./...
+
+  sast-check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Set up Go
+      uses: actions/setup-go@v6
+      with:
+        go-version: '1.25'
+        cache-dependency-path: server/go.sum
+    
+    - name: Install and Run Gosec Manually
+      run: |
+        cd server
+        
+        go mod download
+        
+        go install github.com/securego/gosec/v2/cmd/gosec@latest
+        
+        $(go env GOPATH)/bin/gosec ./...
