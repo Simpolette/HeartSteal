@@ -2,7 +2,7 @@ package route
 
 import (
 	"time"
-	"log"
+
 	"github.com/Simpolette/HeartSteal/server/internal/bootstrap"
 	"github.com/Simpolette/HeartSteal/server/internal/middleware"
 
@@ -12,9 +12,7 @@ import (
 )
 
 func Setup(env *bootstrap.Env, timeout time.Duration, db *mongo.Database, gin *gin.Engine) {
-	if err := gin.SetTrustedProxies(nil); err != nil {
-    	log.Fatal("Could not configure trusted proxies: ", err)
-	}
+	gin.SetTrustedProxies(nil)
 
 	gin.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},

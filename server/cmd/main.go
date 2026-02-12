@@ -2,7 +2,6 @@ package main
 
 import (
 	"time"
-	"log"
 
 	route "github.com/Simpolette/HeartSteal/server/internal/route"
 	"github.com/Simpolette/HeartSteal/server/internal/bootstrap"
@@ -24,7 +23,5 @@ func main() {
 
 	route.Setup(env, timeout, db, gin)
 
-	if err := gin.Run(env.ServerAddress); err != nil {
-		log.Fatal("Server failed to start: ", err)
-	}
+	gin.Run(env.ServerAddress)
 }
