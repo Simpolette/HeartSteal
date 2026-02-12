@@ -14,7 +14,7 @@ import (
 	"github.com/Simpolette/HeartSteal/server/internal/usecase"
 )
 
-func TestUserUseCase_Register(t *testing.T) {
+func Test_Register(t *testing.T) {
 	// Setup
 	setup := func() (*mocks.MockUserRepository, domain.UserUsecase) {
         mockRepo := new(mocks.MockUserRepository)
@@ -48,7 +48,7 @@ func TestUserUseCase_Register(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("ErrorEmailExists", func(t *testing.T) {
+	t.Run("Error_EmailExists", func(t *testing.T) {
 		mockRepo, u := setup()
 		user := &domain.User{Email: "existing@example.com", Password: "123"}
 
@@ -65,7 +65,7 @@ func TestUserUseCase_Register(t *testing.T) {
 		mockRepo.AssertNotCalled(t, "Create")
 	})
 
-	t.Run("ErrorUsernameExists", func(t *testing.T) {
+	t.Run("Error_UsernameExists", func(t *testing.T) {
 		mockRepo, u := setup()
 		user := &domain.User{Email: "existing@example.com", Username: "exist", Password: "123"}
 
@@ -86,7 +86,7 @@ func TestUserUseCase_Register(t *testing.T) {
 	})
 }
 
-func TestUserUseCase_Login(t *testing.T) {
+func Test_Login(t *testing.T) {
 	setup := func() (*mocks.MockUserRepository, domain.UserUsecase) {
         mockRepo := new(mocks.MockUserRepository)
         timeout := 2 * time.Second
@@ -119,7 +119,7 @@ func TestUserUseCase_Login(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("ErrorUserNotFound", func(t *testing.T) {
+	t.Run("Error_UserNotFound", func(t *testing.T) {
 		mockRepo, u := setup()
 		username := "ghost"
 		
@@ -132,9 +132,9 @@ func TestUserUseCase_Login(t *testing.T) {
 		assert.Equal(t, domain.ErrInvalidCredentials, err)
 	})
 
-	t.Run("ErrorWrongPassword", func(t *testing.T) {
+	t.Run("Error_WrongPassword", func(t *testing.T) {
 		mockRepo, u := setup()
-		username := "testErr"
+		username := "test"
 		
 		// User exists
 		foundUser := &domain.User{
