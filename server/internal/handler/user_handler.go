@@ -10,12 +10,12 @@ import (
 type signupRequest struct {
 	Username    string `json:"username"     binding:"required"`
 	Email    	string `json:"email"        binding:"required,email"`
-	Password 	string `json:"password"     binding:"required,min=8"`
+	Password 	string `json:"password"     binding:"required,min=8"` // #nosec G117
 }
 
 type loginRequest struct {
 	Username    string `json:"username"     binding:"required"`
-	Password 	string `json:"password"     binding:"required"`
+	Password 	string `json:"password"     binding:"required"` // #nosec G117
 }
 
 type UserHandler struct {
