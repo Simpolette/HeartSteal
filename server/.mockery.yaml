@@ -15,3 +15,12 @@ packages:
       UserRepository:
         configs:
           - filename: "mock_user_repository.go"
+      SessionRepository:
+        configs:
+          - filename: "mock_session_repository.go"
+      VerificationPINRepository:
+        configs:
+          - filename: "mock_verification_pin_repository.go"
+      EmailService:
+        configs:
+          - filename: "mock_email_service.go"

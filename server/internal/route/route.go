@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/Simpolette/HeartSteal/server/internal/bootstrap"
+	"github.com/Simpolette/HeartSteal/server/internal/infrastructure"
 	"github.com/Simpolette/HeartSteal/server/internal/middleware"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -22,10 +23,13 @@ func Setup(env *bootstrap.Env, timeout time.Duration, db *mongo.Database, gin *g
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
+
+	// Create email service
+	emailService := infrastructure.NewMailerSendService(env.MailerSendAPIKey, env.MailerSendFromEmail)
 	
 	publicRouter := gin.Group("/api")
 	// All Public APIs
-	NewUserRouter(env, timeout, db, publicRouter)
+	NewUserRouter(env, timeout, db, emailService, publicRouter)
 
 	protectedRouter := gin.Group("/api")
 	protectedRouter.Use(middleware.JwtAuthMiddleware(env.AccessTokenSecret))

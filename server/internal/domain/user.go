@@ -14,6 +14,7 @@ var (
 
 	ErrInvalidCredentials = errors.New("invalid credentials")
 	ErrInvalidToken       = errors.New("invalid access token")
+	ErrInvalidResetToken  = errors.New("invalid reset token")
 )
 
 const (
@@ -36,9 +37,14 @@ type UserRepository interface {
 	GetByUsername(c context.Context, username string) (*User, error)
 	GetByEmail(c context.Context, email string) (*User, error)
 	GetByID(c context.Context, id string) (*User, error)
+	UpdatePassword(c context.Context, userID string, hashedPassword string) error
 }
 
 type UserUsecase interface {
 	Register(c context.Context, user *User) error
-	Login(c context.Context, email string, password string) (string, error)
+	Login(c context.Context, username string, password string) (accessToken string, refreshToken string, err error)
+	ForgotPassword(c context.Context, email string) error
+	VerifyPIN(c context.Context, email string, pinCode string) (resetToken string, err error)
+	ResetPassword(c context.Context, resetToken string, newPassword string) error
+	SignOut(c context.Context, userID string) error
 }

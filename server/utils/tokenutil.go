@@ -58,9 +58,14 @@ func ExtractIDFromToken(requestToken string, secret string) (string, error) {
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 
-	if !ok && !token.Valid {
-		return "", fmt.Errorf("Invalid Token")
+	if !ok || !token.Valid {
+		return "", fmt.Errorf("invalid Token")
 	}
 
-	return claims["id"].(string), nil
+	sub, ok := claims["sub"].(string)
+	if !ok {
+		return "", fmt.Errorf("invalid Token: missing subject")
+	}
+
+	return sub, nil
 }

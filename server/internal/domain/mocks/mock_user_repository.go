@@ -246,6 +246,54 @@ func (_c *MockUserRepository_GetByUsername_Call) RunAndReturn(run func(context.C
 	return _c
 }
 
+// UpdatePassword provides a mock function with given fields: c, userID, hashedPassword
+func (_m *MockUserRepository) UpdatePassword(c context.Context, userID string, hashedPassword string) error {
+	ret := _m.Called(c, userID, hashedPassword)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdatePassword")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) error); ok {
+		r0 = rf(c, userID, hashedPassword)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MockUserRepository_UpdatePassword_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdatePassword'
+type MockUserRepository_UpdatePassword_Call struct {
+	*mock.Call
+}
+
+// UpdatePassword is a helper method to define mock.On call
+//   - c context.Context
+//   - userID string
+//   - hashedPassword string
+func (_e *MockUserRepository_Expecter) UpdatePassword(c interface{}, userID interface{}, hashedPassword interface{}) *MockUserRepository_UpdatePassword_Call {
+	return &MockUserRepository_UpdatePassword_Call{Call: _e.mock.On("UpdatePassword", c, userID, hashedPassword)}
+}
+
+func (_c *MockUserRepository_UpdatePassword_Call) Run(run func(c context.Context, userID string, hashedPassword string)) *MockUserRepository_UpdatePassword_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string), args[2].(string))
+	})
+	return _c
+}
+
+func (_c *MockUserRepository_UpdatePassword_Call) Return(_a0 error) *MockUserRepository_UpdatePassword_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockUserRepository_UpdatePassword_Call) RunAndReturn(run func(context.Context, string, string) error) *MockUserRepository_UpdatePassword_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // NewMockUserRepository creates a new instance of MockUserRepository. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewMockUserRepository(t interface {

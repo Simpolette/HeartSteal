@@ -96,3 +96,18 @@ func (r *userRepository) GetByID(c context.Context, id string) (*domain.User, er
 
 	return &user, nil
 }
+
+func (r *userRepository) UpdatePassword(c context.Context, userID string, hashedPassword string) error {
+	collection := r.database.Collection(r.collection)
+
+	objID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return domain.ErrUserNotFound
+	}
+
+	filter := bson.M{"_id": objID}
+	update := bson.M{"$set": bson.M{"password": hashedPassword}}
+
+	_, err = collection.UpdateOne(c, filter, update)
+	return err
+}
